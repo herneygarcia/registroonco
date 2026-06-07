@@ -518,6 +518,41 @@ async function subirAlDrive() {
   }
 }
 
+// ── Cargar desde Drive ────────────────────────────────────────
+async function cargarDesdeDrive() {
+  const url = obtenerDriveUrl();
+  if (!url) {
+    mostrarToast('Configure primero la URL del script en ⚙️ Configuración.', 'error');
+    return;
+  }
+  const btn = document.getElementById('btn-cargar-drive');
+  btn.disabled = true;
+  btn.textContent = '⏳ Cargando...';
+  try {
+    const resp = await fetch(url);
+    const data = await resp.json();
+    if (!data.ok) throw new Error(data.error);
+    const mapaLocal = {};
+    estado.registros.forEach(r => { mapaLocal[String(r._id)] = r; });
+    let importados = 0;
+    data.registros.forEach(r => {
+      if (r._id && r._patologia && PLANTILLAS[r._patologia]) {
+        mapaLocal[String(r._id)] = r;
+        importados++;
+      }
+    });
+    estado.registros = Object.values(mapaLocal);
+    guardarRegistros();
+    actualizarTabla();
+    mostrarToast(`✅ ${importados} registro(s) cargados desde Drive.`, 'success');
+  } catch (err) {
+    mostrarToast(`Error al cargar: ${err.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📥 Cargar desde Drive';
+  }
+}
+
 // ── Configuración ──────────────────────────────────────────────
 function actualizarModo() {
   const key = obtenerApiKey();
@@ -600,6 +635,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-export-excel').addEventListener('click', () => exportarExcel(estado.registros));
   document.getElementById('btn-export-csv').addEventListener('click', () => exportarCSV(estado.registros));
   document.getElementById('btn-subir-drive').addEventListener('click', subirAlDrive);
+  document.getElementById('btn-cargar-drive').addEventListener('click', cargarDesdeDrive);
   document.getElementById('btn-configuracion').addEventListener('click', abrirConfiguracion);
   document.getElementById('btn-modal-close').addEventListener('click', cerrarConfiguracion);
   document.getElementById('btn-modal-guardar').addEventListener('click', guardarConfiguracion);
