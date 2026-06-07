@@ -64,6 +64,9 @@
     <button class="btn btn-outline btn-sm" id="btn-export-csv" style="width:100%;margin-top:6px">
       📄 Exportar CSV
     </button>
+    <button class="btn btn-outline btn-sm" id="btn-subir-drive" style="width:100%;margin-top:6px">
+      ☁️ Subir a Drive
+    </button>
   </aside>
 
   <!-- ── Contenido principal ── -->
@@ -167,6 +170,19 @@
             <option value="gemini">Google Gemini — Gratuito ✅</option>
             <option value="claude">Anthropic Claude — De pago 💳</option>
           </select>
+        </div>
+
+        <!-- URL Google Drive Script -->
+        <div>
+          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px">
+            ☁️ URL Google Drive Script
+          </label>
+          <input type="text" id="modal-drive-url"
+            placeholder="https://script.google.com/macros/s/..."
+            style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:monospace">
+          <p style="font-size:11px;color:var(--text-muted);margin-top:6px;line-height:1.6">
+            Opcional. Obtenga la URL en <strong>script.google.com</strong> al desplegar el script como Web App.
+          </p>
         </div>
 
         <!-- Campo API Key -->

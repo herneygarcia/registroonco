@@ -38,6 +38,14 @@ function guardarProveedor(p) {
   localStorage.setItem('registroOnco_proveedor', p);
 }
 
+function obtenerDriveUrl() {
+  return localStorage.getItem('registroOnco_driveurl') || '';
+}
+
+function guardarDriveUrl(url) {
+  localStorage.setItem('registroOnco_driveurl', url);
+}
+
 // ── Toast notifications ────────────────────────────────────────
 function mostrarToast(msg, tipo = 'info', duracion = 3500) {
   const container = document.getElementById('toast-container');
@@ -465,6 +473,37 @@ async function extraerCampos() {
   }
 }
 
+// ── Subir a Drive ─────────────────────────────────────────────
+async function subirAlDrive() {
+  const url = obtenerDriveUrl();
+  if (!url) {
+    mostrarToast('Configure primero la URL del script en ⚙️ Configuración.', 'error');
+    return;
+  }
+  if (estado.registros.length === 0) {
+    mostrarToast('No hay registros para subir.', 'error');
+    return;
+  }
+  const btn = document.getElementById('btn-subir-drive');
+  btn.disabled = true;
+  btn.textContent = '⏳ Subiendo...';
+  try {
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(estado.registros)
+    });
+    const data = await resp.json();
+    if (data.ok) mostrarToast(`✅ ${estado.registros.length} registro(s) subidos a Drive.`, 'success');
+    else throw new Error(data.error);
+  } catch (err) {
+    mostrarToast(`Error al subir: ${err.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '☁️ Subir a Drive';
+  }
+}
+
 // ── Configuración ──────────────────────────────────────────────
 function actualizarModo() {
   const key = obtenerApiKey();
@@ -491,6 +530,7 @@ function abrirConfiguracion() {
   document.getElementById('modal-config').style.display = 'flex';
   document.getElementById('modal-proveedor').value = obtenerProveedor();
   document.getElementById('modal-api-key').value = obtenerApiKey();
+  document.getElementById('modal-drive-url').value = obtenerDriveUrl();
   actualizarAyudaProveedor();
 }
 
@@ -517,15 +557,17 @@ function actualizarAyudaProveedor() {
 function guardarConfiguracion() {
   const key = document.getElementById('modal-api-key').value.trim();
   const proveedor = document.getElementById('modal-proveedor').value;
+  const driveUrl = document.getElementById('modal-drive-url').value.trim();
   guardarApiKey(key);
   guardarProveedor(proveedor);
+  guardarDriveUrl(driveUrl);
   actualizarModo();
   cerrarConfiguracion();
   if (key) {
-    const nombre = proveedor === 'gemini' ? 'Gemini (gratuito)' : 'Claude IA';
-    mostrarToast(`API key guardada. Usando ${nombre}.`, 'success');
+    const nombre = proveedor === 'groq' ? 'Groq (gratuito)' : proveedor === 'gemini' ? 'Gemini (gratuito)' : 'Claude IA';
+    mostrarToast(`Configuración guardada. Usando ${nombre}.`, 'success');
   } else {
-    mostrarToast('API key eliminada. Modo manual activo.', 'info');
+    mostrarToast('Configuración guardada. Modo manual activo.', 'info');
   }
 }
 
@@ -543,6 +585,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('btn-export-excel').addEventListener('click', () => exportarExcel(estado.registros));
   document.getElementById('btn-export-csv').addEventListener('click', () => exportarCSV(estado.registros));
+  document.getElementById('btn-subir-drive').addEventListener('click', subirAlDrive);
   document.getElementById('btn-configuracion').addEventListener('click', abrirConfiguracion);
   document.getElementById('btn-modal-close').addEventListener('click', cerrarConfiguracion);
   document.getElementById('btn-modal-guardar').addEventListener('click', guardarConfiguracion);
