@@ -38,8 +38,16 @@ function guardarProveedor(p) {
   localStorage.setItem('registroOnco_proveedor', p);
 }
 
+const DRIVE_URL_ACTUAL = 'https://script.google.com/macros/s/AKfycbzNqCH_xY2eYUUIJP3blp5GfxsDfuCElhnI2bShc_XbUm57O6rofPBWVsIx4o_SguzMhg/exec';
+const DRIVE_URL_ANTIGUA = 'https://script.google.com/macros/s/AKfycbxVpObqz1WJiHA8vKFTr51HWmqHte0pQrb9ZFmYiHTvGy8UqYP6Aik8uphMVM-mtXdeRw/exec';
+
 function obtenerDriveUrl() {
-  return localStorage.getItem('registroOnco_driveurl') || 'https://script.google.com/macros/s/AKfycbzNqCH_xY2eYUUIJP3blp5GfxsDfuCElhnI2bShc_XbUm57O6rofPBWVsIx4o_SguzMhg/exec';
+  const guardada = localStorage.getItem('registroOnco_driveurl');
+  if (guardada === DRIVE_URL_ANTIGUA) {
+    localStorage.setItem('registroOnco_driveurl', DRIVE_URL_ACTUAL);
+    return DRIVE_URL_ACTUAL;
+  }
+  return guardada || DRIVE_URL_ACTUAL;
 }
 
 function guardarDriveUrl(url) {
