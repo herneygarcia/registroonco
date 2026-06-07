@@ -540,14 +540,35 @@ async function cargarDesdeDrive() {
     const resp = await fetch(url);
     const data = await resp.json();
     if (!data.ok) throw new Error(data.error);
+    // Mapa inverso: nombre legible → key interno (ej. "Cáncer de Vejiga" → "vejiga")
+    const nombreAKey = {};
+    Object.entries(PLANTILLAS).forEach(([k, p]) => { nombreAKey[p.nombre] = k; });
+
     const mapaLocal = {};
     estado.registros.forEach(r => { mapaLocal[String(r._id)] = r; });
     let importados = 0;
     data.registros.forEach(r => {
-      if (r._id && r._patologia && PLANTILLAS[r._patologia]) {
-        mapaLocal[String(r._id)] = r;
-        importados++;
-      }
+      if (!r._id) return;
+      // Resolver _patologia: key directo o nombre legible de hoja
+      let patKey = r._patologia;
+      if (!patKey || !PLANTILLAS[patKey]) patKey = nombreAKey[r._patologia];
+      if (!patKey || !PLANTILLAS[patKey]) patKey = nombreAKey[r._hoja];
+      if (!patKey) return;
+
+      // Construir mapa label→id para esta patología
+      const labelAId = {};
+      PLANTILLAS[patKey].campos.forEach(c => { labelAId[c.label] = c.id; });
+
+      // Reconvertir claves de label a id
+      const reg = { _id: Number(r._id) || r._id, _patologia: patKey };
+      Object.entries(r).forEach(([k, v]) => {
+        if (k.startsWith('_')) return;
+        const id = labelAId[k];
+        if (id) reg[id] = v;
+      });
+
+      mapaLocal[String(reg._id)] = reg;
+      importados++;
     });
     estado.registros = Object.values(mapaLocal);
     guardarRegistros();
