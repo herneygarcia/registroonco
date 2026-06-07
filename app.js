@@ -39,7 +39,7 @@ function guardarProveedor(p) {
 }
 
 function obtenerDriveUrl() {
-  return localStorage.getItem('registroOnco_driveurl') || '';
+  return localStorage.getItem('registroOnco_driveurl') || 'https://script.google.com/macros/s/AKfycbxVpObqz1WJiHA8vKFTr51HWmqHte0pQrb9ZFmYiHTvGy8UqYP6Aik8uphMVM-mtXdeRw/exec';
 }
 
 function guardarDriveUrl(url) {
@@ -484,6 +484,20 @@ async function subirAlDrive() {
     mostrarToast('No hay registros para subir.', 'error');
     return;
   }
+
+  const camposPorPatologia = {};
+  estado.registros.forEach(r => {
+    if (!camposPorPatologia[r._patologia]) {
+      const plantilla = PLANTILLAS[r._patologia];
+      if (plantilla) {
+        camposPorPatologia[r._patologia] = {
+          nombre: plantilla.nombre,
+          campos: plantilla.campos.map(c => ({ id: c.id, label: c.label }))
+        };
+      }
+    }
+  });
+
   const btn = document.getElementById('btn-subir-drive');
   btn.disabled = true;
   btn.textContent = '⏳ Subiendo...';
@@ -491,10 +505,10 @@ async function subirAlDrive() {
     const resp = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(estado.registros)
+      body: JSON.stringify({ registros: estado.registros, camposPorPatologia })
     });
     const data = await resp.json();
-    if (data.ok) mostrarToast(`✅ ${estado.registros.length} registro(s) subidos a Drive.`, 'success');
+    if (data.ok) mostrarToast(`✅ ${data.escritos} registro(s) subidos a Drive.`, 'success');
     else throw new Error(data.error);
   } catch (err) {
     mostrarToast(`Error al subir: ${err.message}`, 'error');
