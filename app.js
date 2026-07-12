@@ -583,11 +583,12 @@ async function cargarDesdeDrive() {
       const labelAId = {};
       PLANTILLAS[patKey].campos.forEach(c => { labelAId[c.label] = c.id; });
 
-      // Reconvertir claves de label a id
+      // Reconvertir claves de label a id (soporta headers bilingües como "Nombre / Full Name")
       const reg = { _id: Number(r._id) || r._id, _patologia: patKey };
       Object.entries(r).forEach(([k, v]) => {
         if (k.startsWith('_')) return;
-        const id = labelAId[k];
+        const labelEs = k.split(' / ')[0]; // Extrae la parte español si es bilingual
+        const id = labelAId[labelEs];
         if (id) reg[id] = v;
       });
 
