@@ -643,6 +643,7 @@ tbody td {
     width: 100%;
     gap: 6px;
     display: flex;
+    flex-wrap: wrap;
   }
 
   .header-right button, .header-right span {
@@ -652,9 +653,9 @@ tbody td {
   }
 
   .mode-badge {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 11px;
+    flex-basis: 100%;
+    text-align: center;
+    font-size: 12px;
+    padding: 8px 0;
   }
 }
