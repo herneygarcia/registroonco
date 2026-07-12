@@ -74,6 +74,10 @@ header h1 span {
   width: auto;
 }
 
+.btn-code {
+  display: none;
+}
+
 /* ── Footer ── */
 footer {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
@@ -667,5 +671,11 @@ tbody td {
 
   .header-right .btn-label {
     display: none;
+  }
+
+  .header-right .btn-code {
+    display: inline;
+    font-size: 10px;
+    margin-left: 2px;
   }
 }

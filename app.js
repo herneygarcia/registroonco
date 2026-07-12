@@ -709,6 +709,8 @@ function aplicarIdioma(idioma) {
   if (btnTranslate) {
     const label = btnTranslate.querySelector('.btn-label');
     if (label) label.textContent = idioma === 'en' ? 'Español' : 'English';
+    const code = btnTranslate.querySelector('.btn-code');
+    if (code) code.textContent = idioma === 'en' ? 'ES' : 'EN';
     btnTranslate.title = idioma === 'en' ? 'Español' : 'English';
     btnTranslate.setAttribute('aria-label', idioma === 'en' ? 'Cambiar a Español' : 'Switch to English');
   }
