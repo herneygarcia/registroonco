@@ -81,31 +81,23 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 20px;
   box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
   margin-top: 40px;
-}
-
-.footer-badge {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 10px 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  text-align: center;
 }
 
 .footer-logo {
-  height: 40px;
+  height: 32px;
   width: auto;
   flex-shrink: 0;
 }
 
 .footer-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  color: var(--text);
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 300;
+  opacity: 0.9;
 }
 
 .footer-text p {
@@ -113,23 +105,9 @@ footer {
   padding: 0;
 }
 
-.footer-name {
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.15;
-  color: var(--primary);
-  text-transform: uppercase;
-}
-
-.footer-credentials {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.footer-specialty {
-  font-size: 10px;
-  color: var(--text-muted);
+.footer-text p:first-child {
+  font-weight: 500;
+  opacity: 1;
 }
 
 /* ── Layout principal ── */
