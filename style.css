@@ -621,13 +621,19 @@ tbody td {
   }
 
   header h1 {
-    font-size: 15px;
+    font-size: 13px;
     flex: 1;
     min-width: 0;
     margin-left: 4px;
+    line-height: 1.2;
   }
 
-  header h1 span { display: none; }
+  header h1 span {
+    display: block;
+    font-size: 10px;
+    font-weight: 400;
+    margin-top: 2px;
+  }
 
   .header-badge {
     margin-right: 0;
@@ -647,15 +653,19 @@ tbody td {
   }
 
   .header-right button, .header-right span {
-    font-size: 11px;
-    padding: 6px 8px;
+    font-size: 10px;
+    padding: 5px 6px;
     flex: 1;
   }
 
   .mode-badge {
     flex-basis: 100%;
     text-align: center;
-    font-size: 12px;
-    padding: 8px 0;
+    font-size: 10px;
+    padding: 6px 0;
+  }
+
+  .header-right .btn-label {
+    display: none;
   }
 }

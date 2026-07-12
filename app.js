@@ -707,7 +707,8 @@ function aplicarIdioma(idioma) {
   // Actualizar botón de traducción
   const btnTranslate = document.getElementById('btn-translate');
   if (btnTranslate) {
-    btnTranslate.textContent = idioma === 'en' ? '🌐 Español' : '🌐 English';
+    const label = btnTranslate.querySelector('.btn-label');
+    if (label) label.textContent = idioma === 'en' ? 'Español' : 'English';
   }
 
   // Re-renderizar contenido dinámico
