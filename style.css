@@ -58,6 +58,49 @@ header h1 span {
   gap: 12px;
 }
 
+.header-logo {
+  height: 36px;
+  width: auto;
+  margin-right: 12px;
+}
+
+/* ── Footer ── */
+footer {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: #fff;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+  margin-top: 40px;
+  text-align: center;
+}
+
+.footer-logo {
+  height: 32px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.footer-text {
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 300;
+  opacity: 0.9;
+}
+
+.footer-text p {
+  margin: 0;
+  padding: 0;
+}
+
+.footer-text p:first-child {
+  font-weight: 500;
+  opacity: 1;
+}
+
 /* ── Layout principal ── */
 .layout {
   display: grid;
