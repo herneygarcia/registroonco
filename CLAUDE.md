@@ -6,15 +6,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **RegistroOnco** — voice-based patient registry web app for genitourinary oncology, deployed at `herneygarcia.github.io/registroonco`. Pure static HTML/JS/CSS, no build step. Open `index.html` directly in Chrome to run locally.
 
+## Structure
+
+- **`js/`** — application logic: `templates.js` (data), `app.js` (runtime), `export.js` (Excel/CSV), `translations.js` (i18n)
+- **`css/`** — `style.css` (all styling)
+- **`assets/`** — `logo.png`, app icons (`icon-180.png`, `icon-192.png`, `icon-512.png`), `manifest.json` (PWA)
+- **Root** — `index.html`, `CLAUDE.md`, `.git`
+
 ## Architecture
 
 Three JS files loaded in order via `<script>` tags in `index.html`:
 
-1. **`templates.js`** — all data definitions. `CAMPOS_COMUNES` (8 shared fields including `institucion`) is spread into every template. `PLANTILLAS` is a keyed object (`pene`, `prostata`, `vejiga`, `rinon`, `testiculo`, `ureter`, `adrenal`, `escroto`, `uretra`) where each entry has `{ nombre, cie10, color, campos[] }`. Field types: `text`, `number`, `date`, `select`, `boolean`, `textarea`.
+1. **`js/templates.js`** — all data definitions. `CAMPOS_COMUNES` (8 shared fields including `institucion`) is spread into every template. `PLANTILLAS` is a keyed object (`pene`, `prostata`, `vejiga`, `rinon`, `testiculo`, `ureter`, `adrenal`, `escroto`, `uretra`) where each entry has `{ nombre, cie10, color, campos[] }`. Field types: `text`, `number`, `date`, `select`, `boolean`, `textarea`.
 
-2. **`export.js`** — `exportarExcel()` and `exportarCSV()`. Uses SheetJS loaded from CDN. Groups records by `_patologia` key and uses template field labels as column headers.
+2. **`js/export.js`** — `exportarExcel()` and `exportarCSV()`. Uses SheetJS loaded from CDN. Groups records by `_patologia` key and uses template field labels as column headers.
 
-3. **`app.js`** — all runtime logic. Global `estado` object holds current state. Key flows:
+3. **`js/app.js`** — all runtime logic. Global `estado` object holds current state. Key flows:
    - **Persistence**: `localStorage` keys `registroOnco_datos`, `registroOnco_apikey`, `registroOnco_proveedor`, `registroOnco_driveurl`
    - **Form**: `renderizarFormulario(datosExtraidos?)` generates fields dynamically from `PLANTILLAS[estado.patologiaActual].campos`
    - **Voice**: Web Speech API (`es-CO`), Chrome only. Records to `estado.transcripcion`, then user triggers AI extraction
@@ -39,6 +46,6 @@ Auto-migration: `obtenerDriveUrl()` detects `DRIVE_URL_ANTIGUA` in localStorage 
 
 ## Deploying changes
 
-No CI. Upload changed files directly to `github.com/herneygarcia/registroonco` via the GitHub web UI (Add file → Upload files). GitHub Pages serves the `main` branch; changes go live in ~2 minutes.
+No CI. Use `git push origin main` to deploy (or upload changed files directly to `github.com/herneygarcia/registroonco` via the GitHub web UI, ensuring folder structure is preserved). GitHub Pages serves the `main` branch; changes go live in ~2 minutes.
 
 When the Apps Script backend changes: go to `script.google.com` → project RegistroOnco → deploy → Administrar implementaciones → edit → Nueva versión → Actualizar. The `/exec` URL stays the same.
