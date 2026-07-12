@@ -2,7 +2,7 @@
 
 function exportarExcel(registros) {
   if (!registros || registros.length === 0) {
-    mostrarToast('No hay registros para exportar.', 'error');
+    mostrarToast(t('No hay registros para exportar.'), 'error');
     return;
   }
 
@@ -53,21 +53,21 @@ function exportarExcel(registros) {
 
   // Hoja resumen con todos los registros (campos básicos)
   const camposResumen = ['_patologiaNombre', 'nombre', 'historia_clinica', 'edad', 'fecha_diagnostico', 'tnm_t', 'tnm_n', 'tnm_m', 'procedimiento', 'estado_actual', 'proximo_seguimiento'];
-  const encResumen = ['Patología', 'Nombre', 'Historia clínica', 'Edad', 'Fecha dx', 'T', 'N', 'M', 'Procedimiento', 'Estado actual', 'Próximo control'];
+  const encResumen = [t('Patología'), t('Nombre'), t('Historia clínica'), t('Edad'), t('Fecha dx'), 'T', 'N', 'M', t('Procedimiento'), t('Estado actual'), t('Próximo control')];
   const filasResumen = registros.map(r => camposResumen.map(c => r[c] ?? ''));
   const wsResumen = XLSX.utils.aoa_to_sheet([encResumen, ...filasResumen]);
   wsResumen['!cols'] = encResumen.map(h => ({ wch: Math.max(h.length + 2, 15) }));
-  XLSX.utils.book_append_sheet(wb, wsResumen, 'Resumen');
+  XLSX.utils.book_append_sheet(wb, wsResumen, t('Resumen'));
 
   // Descargar
   const fecha = new Date().toISOString().split('T')[0];
   XLSX.writeFile(wb, `registro_oncologia_${fecha}.xlsx`);
-  mostrarToast(`Excel exportado: ${registros.length} registro(s)`, 'success');
+  mostrarToast(t('{n} registro(s) - Excel exportado').replace('{n}', registros.length), 'success');
 }
 
 function exportarCSV(registros) {
   if (!registros || registros.length === 0) {
-    mostrarToast('No hay registros para exportar.', 'error');
+    mostrarToast(t('No hay registros para exportar.'), 'error');
     return;
   }
 
@@ -93,5 +93,5 @@ function exportarCSV(registros) {
   a.download = `registro_oncologia_${new Date().toISOString().split('T')[0]}.csv`;
   a.click();
   URL.revokeObjectURL(url);
-  mostrarToast(`CSV exportado: ${registros.length} registro(s)`, 'success');
+  mostrarToast(t('{n} registro(s) - CSV exportado').replace('{n}', registros.length), 'success');
 }
