@@ -8,6 +8,7 @@ let estado = {
   recognition: null,
   transcripcion: '',
   procesando: false,
+  idioma: localStorage.getItem('registroOnco_idioma') || 'en',
 };
 
 // ── Persistencia ───────────────────────────────────────────────
@@ -87,7 +88,7 @@ function renderizarFormulario(datosExtraidos = {}) {
   container.innerHTML = '';
 
   // Título de la patología seleccionada
-  document.getElementById('form-title').textContent = `Nuevo registro — ${plantilla.nombre}`;
+  document.getElementById('form-title').textContent = `${t('Nuevo registro')} — ${t(plantilla.nombre)}`;
   document.getElementById('form-title').style.borderLeft = `4px solid ${plantilla.color}`;
 
   plantilla.campos.forEach(campo => {
@@ -105,14 +106,14 @@ function renderizarFormulario(datosExtraidos = {}) {
       cb.checked = valor === true || valor === 'Sí' || valor === 'sí' || valor === 'si' || valor === true;
       const lbl = document.createElement('label');
       lbl.htmlFor = `f_${campo.id}`;
-      lbl.textContent = campo.label;
+      lbl.textContent = t(campo.label);
       div.appendChild(cb);
       div.appendChild(lbl);
     } else if (campo.tipo === 'textarea') {
       div.classList.add('full-width');
       const lbl = document.createElement('label');
       lbl.htmlFor = `f_${campo.id}`;
-      lbl.textContent = campo.label;
+      lbl.textContent = t(campo.label);
       const ta = document.createElement('textarea');
       ta.id = `f_${campo.id}`;
       ta.name = campo.id;
@@ -123,18 +124,18 @@ function renderizarFormulario(datosExtraidos = {}) {
     } else if (campo.tipo === 'select') {
       const lbl = document.createElement('label');
       lbl.htmlFor = `f_${campo.id}`;
-      lbl.textContent = campo.label;
+      lbl.textContent = t(campo.label);
       const sel = document.createElement('select');
       sel.id = `f_${campo.id}`;
       sel.name = campo.id;
       const optVacio = document.createElement('option');
       optVacio.value = '';
-      optVacio.textContent = '— Seleccionar —';
+      optVacio.textContent = t('— Seleccionar —');
       sel.appendChild(optVacio);
       (campo.opciones || []).forEach(op => {
         const opt = document.createElement('option');
         opt.value = op;
-        opt.textContent = op;
+        opt.textContent = t(op);
         if (valor && normalizarTexto(valor) === normalizarTexto(op)) {
           opt.selected = true;
           sel.classList.add('field-filled');
@@ -146,7 +147,7 @@ function renderizarFormulario(datosExtraidos = {}) {
     } else {
       const lbl = document.createElement('label');
       lbl.htmlFor = `f_${campo.id}`;
-      lbl.textContent = campo.label;
+      lbl.textContent = t(campo.label);
       const inp = document.createElement('input');
       inp.type = campo.tipo === 'number' ? 'number' : campo.tipo === 'date' ? 'date' : 'text';
       inp.id = `f_${campo.id}`;
@@ -198,10 +199,10 @@ function actualizarTabla() {
   const regsPatologia = estado.registros.filter(r => r._patologia === estado.patologiaActual);
   const tbody = document.getElementById('tabla-body');
   const countEl = document.getElementById('registros-count');
-  countEl.textContent = `${regsPatologia.length} registro(s)`;
+  countEl.textContent = t('{n} registro(s)').replace('{n}', regsPatologia.length);
 
   if (regsPatologia.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" class="table-empty">No hay registros para esta patología todavía.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" class="table-empty">${t('No hay registros para esta patología todavía.')}</td></tr>`;
     return;
   }
 
@@ -212,8 +213,8 @@ function actualizarTabla() {
       <td>${r.edad ?? '—'}</td>
       <td>${r.fecha_diagnostico || '—'}</td>
       <td>${r.tnm_t || '—'} ${r.tnm_n || ''} ${r.tnm_m || ''}</td>
-      <td>${r.procedimiento || '—'}</td>
-      <td>${r.estado_actual || '—'}</td>
+      <td>${t(r.procedimiento || '—')}</td>
+      <td>${t(r.estado_actual || '—')}</td>
       <td>
         <button class="btn btn-outline btn-sm" onclick="editarRegistro(${r._id})">✏️</button>
         <button class="btn btn-danger btn-sm" onclick="eliminarRegistro(${r._id})">🗑</button>
@@ -225,14 +226,14 @@ function actualizarTabla() {
 function agregarRegistro() {
   const datos = leerFormulario();
   if (!datos.nombre && !datos.historia_clinica) {
-    mostrarToast('Ingrese al menos el nombre o la historia clínica del paciente.', 'error');
+    mostrarToast(t('Ingrese al menos el nombre o la historia clínica del paciente.'), 'error');
     return;
   }
   estado.registros.push(datos);
   guardarRegistros();
   actualizarTabla();
   limpiarFormulario();
-  mostrarToast('Registro guardado correctamente.', 'success');
+  mostrarToast(t('Registro guardado correctamente.'), 'success');
 }
 
 function editarRegistro(id) {
@@ -248,20 +249,20 @@ function editarRegistro(id) {
       guardarRegistros();
       actualizarTabla();
       limpiarFormulario();
-      mostrarToast('Registro actualizado.', 'success');
+      mostrarToast(t('Registro actualizado.'), 'success');
     }
     document.getElementById('btn-guardar').onclick = agregarRegistro;
   };
-  document.getElementById('btn-guardar').textContent = '💾 Actualizar registro';
+  document.getElementById('btn-guardar').textContent = t('💾 Actualizar registro');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function eliminarRegistro(id) {
-  if (!confirm('¿Eliminar este registro permanentemente?')) return;
+  if (!confirm(t('¿Eliminar este registro permanentemente?'))) return;
   estado.registros = estado.registros.filter(r => r._id !== id);
   guardarRegistros();
   actualizarTabla();
-  mostrarToast('Registro eliminado.', 'info');
+  mostrarToast(t('Registro eliminado.'), 'info');
 }
 
 // ── Reconocimiento de voz ──────────────────────────────────────
@@ -269,12 +270,12 @@ function inicializarVoz() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
     document.getElementById('mic-btn').disabled = true;
-    document.getElementById('mic-label').textContent = 'Reconocimiento de voz no disponible en este navegador. Use Chrome.';
+    document.getElementById('mic-label').textContent = t('Reconocimiento de voz no disponible en este navegador. Use Chrome.');
     return;
   }
 
   const rec = new SpeechRecognition();
-  rec.lang = 'es-CO';
+  rec.lang = estado.idioma === 'en' ? 'en-US' : 'es-CO';
   rec.continuous = true;
   rec.interimResults = true;
 
@@ -291,7 +292,7 @@ function inicializarVoz() {
   };
 
   rec.onerror = (e) => {
-    if (e.error !== 'aborted') mostrarToast(`Error de micrófono: ${e.error}`, 'error');
+    if (e.error !== 'aborted') mostrarToast(t('Error de micrófono: {error}').replace('{error}', e.error), 'error');
     detenerGrabacion();
   };
 
@@ -308,14 +309,15 @@ function toggleGrabacion() {
 }
 
 function iniciarGrabacion() {
-  if (!estado.recognition) { mostrarToast('Reconocimiento de voz no disponible.', 'error'); return; }
+  if (!estado.recognition) { mostrarToast(t('Reconocimiento de voz no disponible.'), 'error'); return; }
+  estado.recognition.lang = estado.idioma === 'en' ? 'en-US' : 'es-CO';
   estado.transcripcion = '';
   estado.grabando = true;
   estado.recognition.start();
   const btn = document.getElementById('mic-btn');
   btn.classList.add('recording');
   btn.innerHTML = '⏹';
-  document.getElementById('mic-label').textContent = 'Grabando... hable ahora. Presione para detener.';
+  document.getElementById('mic-label').textContent = t('Grabando... hable ahora. Presione para detener.');
   document.getElementById('transcripcion').textContent = '';
   document.getElementById('transcripcion').classList.remove('has-text');
 }
@@ -326,7 +328,7 @@ function detenerGrabacion() {
   const btn = document.getElementById('mic-btn');
   btn.classList.remove('recording');
   btn.innerHTML = '🎙';
-  document.getElementById('mic-label').textContent = 'Presione el micrófono y dicte la información del paciente.';
+  document.getElementById('mic-label').textContent = t('Presione el micrófono y dicte la información del paciente.');
 
   // Rescatar texto interim visible si estado.transcripcion está vacío
   const textoDOM = document.getElementById('transcripcion').textContent.trim();
@@ -336,7 +338,7 @@ function detenerGrabacion() {
 
   if (estado.transcripcion.trim()) {
     document.getElementById('extract-btn').style.display = 'block';
-    mostrarToast('Dictado finalizado. Revise el texto y extraiga los campos.', 'info');
+    mostrarToast(t('Dictado finalizado. Revise el texto y extraiga los campos.'), 'info');
   }
 }
 
@@ -363,9 +365,9 @@ function construirPrompt(texto) {
     return desc;
   }).join('\n');
 
-  return `Eres un asistente médico especializado en urología oncológica. Analiza el siguiente dictado médico en español y extrae los datos del paciente.
+  return `Eres un asistente médico especializado en urología oncológica. Analiza el siguiente dictado médico y extrae los datos del paciente. El dictado puede estar en español o en inglés — detecta el idioma automáticamente.
 
-Devuelve ÚNICAMENTE un objeto JSON válido con los campos listados. Para campos no mencionados usa null. Interpreta abreviaciones médicas (HPB=hiperplasia prostática benigna, TAC=tomografía axial computarizada, Dx=diagnóstico, etc.). Si se menciona "sin alteraciones" en imágenes, usa ese valor exacto. Para fechas usa formato YYYY-MM-DD si es posible.
+Devuelve ÚNICAMENTE un objeto JSON válido con los campos listados. Para cada campo de tipo "select", el valor debe ser EXACTAMENTE una de las "opciones válidas" listadas (que están en español), sin importar en qué idioma esté el dictado — traduce el término dictado en inglés a la opción española correspondiente. Para campos no mencionados usa null. Interpreta abreviaciones médicas (HPB=hiperplasia prostática benigna, TAC=tomografía axial computarizada, Dx=diagnóstico, etc.) en ambos idiomas. Si se menciona "sin alteraciones"/"no abnormalities" en imágenes, usa ese valor exacto en español. Para fechas usa formato YYYY-MM-DD si es posible.
 
 Campos esperados para patología "${plantilla.nombre}":
 ${camposDesc}
@@ -387,7 +389,7 @@ async function extraerConGemini(apiKey, prompt) {
     const err = await resp.json();
     const msg = err.error?.message || '';
     if (msg.includes('limit: 0') || msg.includes('quota') || msg.includes('Quota')) {
-      throw new Error('⚠️ Su API key no tiene acceso gratuito. Debe obtenerla desde aistudio.google.com → "Get API key" → "Create API key". NO use Google Cloud Console.');
+      throw new Error(t('⚠️ Su API key no tiene acceso gratuito. Debe obtenerla desde aistudio.google.com → "Get API key" → "Create API key". NO use Google Cloud Console.'));
     }
     throw new Error(msg || `HTTP ${resp.status}`);
   }
@@ -439,44 +441,66 @@ async function extraerConClaude(apiKey, prompt) {
 
 async function extraerCampos() {
   const texto = estado.transcripcion.trim() || document.getElementById('transcripcion').textContent.trim();
-  if (!texto) { mostrarToast('No hay texto para procesar.', 'error'); return; }
-
-  const apiKey = obtenerApiKey();
-  if (!apiKey) {
-    mostrarToast('Sin API key — complete los campos manualmente.', 'info');
-    renderizarFormulario({ observaciones: texto });
-    return;
-  }
+  if (!texto) { mostrarToast(t('No hay texto para procesar.'), 'error'); return; }
 
   const prompt = construirPrompt(texto);
+  const apiKey = obtenerApiKey();
   const proveedor = obtenerProveedor();
 
   const btn = document.getElementById('extract-btn');
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Procesando...';
+  btn.innerHTML = '<span class="spinner"></span> ' + t('Procesando');
   estado.procesando = true;
 
   try {
-    let rawJson = proveedor === 'gemini'
-      ? await extraerConGemini(apiKey, prompt)
-      : proveedor === 'groq'
-      ? await extraerConGroq(apiKey, prompt)
-      : await extraerConClaude(apiKey, prompt);
+    let rawJson;
+
+    // Prioridad 1: Si el usuario tiene una clave local, usar el proveedor directo
+    if (apiKey) {
+      rawJson = proveedor === 'gemini'
+        ? await extraerConGemini(apiKey, prompt)
+        : proveedor === 'groq'
+        ? await extraerConGroq(apiKey, prompt)
+        : await extraerConClaude(apiKey, prompt);
+    } else {
+      // Prioridad 2: Intentar el proxy via Apps Script
+      const driveUrl = obtenerDriveUrl();
+      if (!driveUrl) {
+        throw new Error(t('Sin API key ni URL de Drive configurada. Configure en ⚙️ Configuración.'));
+      }
+
+      const respProxy = await fetch(driveUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ accion: 'extraer', prompt })
+      });
+
+      if (!respProxy.ok) {
+        throw new Error(`HTTP ${respProxy.status} desde servidor`);
+      }
+
+      const dataProxy = await respProxy.json();
+      if (!dataProxy.ok) {
+        throw new Error(dataProxy.error || 'Error desconocido del servidor');
+      }
+
+      rawJson = dataProxy.texto;
+    }
 
     const jsonStr = rawJson.startsWith('{') ? rawJson : rawJson.match(/\{[\s\S]*\}/)?.[0];
-    if (!jsonStr) throw new Error('La respuesta no contiene JSON válido.');
+    if (!jsonStr) throw new Error(t('La respuesta no contiene JSON válido.'));
 
     const extraido = JSON.parse(jsonStr);
     renderizarFormulario(extraido);
-    mostrarToast('Campos extraídos. Revise y confirme antes de guardar.', 'success');
+    mostrarToast(t('Campos extraídos. Revise y confirme antes de guardar.'), 'success');
 
   } catch (err) {
     console.error(err);
-    mostrarToast(`Error al procesar: ${err.message}`, 'error');
+    mostrarToast(t('Error al procesar: {msg}').replace('{msg}', err.message), 'error');
     renderizarFormulario({ observaciones: texto });
   } finally {
     btn.disabled = false;
-    btn.innerHTML = '✨ Extraer campos con IA';
+    btn.innerHTML = t('✨ Extraer campos con IA');
     estado.procesando = false;
   }
 }
@@ -485,11 +509,11 @@ async function extraerCampos() {
 async function subirAlDrive() {
   const url = obtenerDriveUrl();
   if (!url) {
-    mostrarToast('Configure primero la URL del script en ⚙️ Configuración.', 'error');
+    mostrarToast(t('Configure primero la URL del script en ⚙️ Configuración.'), 'error');
     return;
   }
   if (estado.registros.length === 0) {
-    mostrarToast('No hay registros para subir.', 'error');
+    mostrarToast(t('No hay registros para subir.'), 'error');
     return;
   }
 
@@ -508,7 +532,7 @@ async function subirAlDrive() {
 
   const btn = document.getElementById('btn-subir-drive');
   btn.disabled = true;
-  btn.textContent = '⏳ Subiendo...';
+  btn.textContent = '⏳ ' + t('Subiendo');
   try {
     const resp = await fetch(url, {
       method: 'POST',
@@ -516,13 +540,13 @@ async function subirAlDrive() {
       body: JSON.stringify({ registros: estado.registros, camposPorPatologia })
     });
     const data = await resp.json();
-    if (data.ok) mostrarToast(`✅ ${data.escritos} registro(s) subidos a Drive.`, 'success');
+    if (data.ok) mostrarToast(t('{n} registro(s) subidos a Drive.').replace('{n}', data.escritos), 'success');
     else throw new Error(data.error);
   } catch (err) {
-    mostrarToast(`Error al subir: ${err.message}`, 'error');
+    mostrarToast(t('Error al subir: {msg}').replace('{msg}', err.message), 'error');
   } finally {
     btn.disabled = false;
-    btn.textContent = '☁️ Subir a Drive';
+    btn.textContent = t('☁️ Subir a Drive');
   }
 }
 
@@ -530,12 +554,12 @@ async function subirAlDrive() {
 async function cargarDesdeDrive() {
   const url = obtenerDriveUrl();
   if (!url) {
-    mostrarToast('Configure primero la URL del script en ⚙️ Configuración.', 'error');
+    mostrarToast(t('Configure primero la URL del script en ⚙️ Configuración.'), 'error');
     return;
   }
   const btn = document.getElementById('btn-cargar-drive');
   btn.disabled = true;
-  btn.textContent = '⏳ Cargando...';
+  btn.textContent = '⏳ ' + t('Cargando');
   try {
     const resp = await fetch(url);
     const data = await resp.json();
@@ -573,12 +597,12 @@ async function cargarDesdeDrive() {
     estado.registros = Object.values(mapaLocal);
     guardarRegistros();
     actualizarTabla();
-    mostrarToast(`✅ ${importados} registro(s) cargados desde Drive.`, 'success');
+    mostrarToast(t('{n} registro(s) cargados desde Drive.').replace('{n}', importados), 'success');
   } catch (err) {
-    mostrarToast(`Error al cargar: ${err.message}`, 'error');
+    mostrarToast(t('Error al cargar: {msg}').replace('{msg}', err.message), 'error');
   } finally {
     btn.disabled = false;
-    btn.textContent = '📥 Cargar desde Drive';
+    btn.textContent = t('📥 Cargar desde Drive');
   }
 }
 
@@ -586,20 +610,28 @@ async function cargarDesdeDrive() {
 function actualizarModo() {
   const key = obtenerApiKey();
   const proveedor = obtenerProveedor();
+  const driveUrl = obtenerDriveUrl();
   const badge = document.getElementById('mode-badge');
+
   if (key) {
+    // Usuario con clave local — usar proveedor directo
     if (proveedor === 'groq') {
-      badge.textContent = '🆓 Groq (gratuito)';
+      badge.textContent = t('🆓 Groq (gratuito)');
       badge.className = 'mode-badge ia';
     } else if (proveedor === 'gemini') {
-      badge.textContent = '🆓 Gemini (gratuito)';
+      badge.textContent = t('🆓 Gemini (gratuito)');
       badge.className = 'mode-badge ia';
     } else {
-      badge.textContent = '🤖 Claude IA';
+      badge.textContent = t('🤖 Claude IA');
       badge.className = 'mode-badge ia';
     }
+  } else if (driveUrl) {
+    // Sin clave local, pero proxy disponible — IA compartida
+    badge.textContent = t('🤖 Groq (compartida)');
+    badge.className = 'mode-badge ia';
   } else {
-    badge.textContent = '✋ Modo manual';
+    // Sin clave ni proxy — modo manual
+    badge.textContent = t('✋ Modo manual');
     badge.className = 'mode-badge manual';
   }
 }
@@ -622,13 +654,13 @@ function actualizarAyudaProveedor() {
   const input = document.getElementById('modal-api-key');
   if (p === 'groq') {
     input.placeholder = 'gsk_...';
-    ayuda.innerHTML = '✅ <strong>Gratuito.</strong> Obtenga su key en <strong>console.groq.com</strong> → "API Keys" → "Create API Key". No requiere tarjeta de crédito. 14.400 solicitudes/día.';
+    ayuda.innerHTML = t('Gratuito. Obtenga su key en console.groq.com → "API Keys" → "Create API Key". No requiere tarjeta de crédito. 14.400 solicitudes/día.');
   } else if (p === 'gemini') {
     input.placeholder = 'AIzaSy...';
-    ayuda.innerHTML = '✅ <strong>Gratuito.</strong> Obtenga su key en <strong>aistudio.google.com</strong> → "Get API key" → "Create API key". No requiere tarjeta.<br>⚠️ <strong>NO</strong> use Google Cloud Console — esa key tiene cuota 0 y no funcionará.';
+    ayuda.innerHTML = t('Gratuito. Obtenga su key en aistudio.google.com → "Get API key" → "Create API key". No requiere tarjeta.') + '<br>' + t('NO use Google Cloud Console — esa key tiene cuota 0 y no funcionará.');
   } else {
     input.placeholder = 'sk-ant-api03-...';
-    ayuda.innerHTML = '💳 <strong>De pago.</strong> Obtenga su key en <strong>console.anthropic.com</strong> → "API Keys". Incluye $5 USD de crédito inicial.';
+    ayuda.innerHTML = t('De pago. Obtenga su key en console.anthropic.com → "API Keys". Incluye $5 USD de crédito inicial.');
   }
 }
 
@@ -643,10 +675,49 @@ function guardarConfiguracion() {
   cerrarConfiguracion();
   if (key) {
     const nombre = proveedor === 'groq' ? 'Groq (gratuito)' : proveedor === 'gemini' ? 'Gemini (gratuito)' : 'Claude IA';
-    mostrarToast(`Configuración guardada. Usando ${nombre}.`, 'success');
+    mostrarToast(t('Configuración guardada. Usando {nombre}.').replace('{nombre}', nombre), 'success');
   } else {
-    mostrarToast('Configuración guardada. Modo manual activo.', 'info');
+    mostrarToast(t('Configuración guardada. Modo manual activo.'), 'info');
   }
+}
+
+// ── Idioma / Traducción ────────────────────────────────────────
+function aplicarIdioma(idioma) {
+  estado.idioma = idioma;
+  localStorage.setItem('registroOnco_idioma', idioma);
+  document.documentElement.lang = idioma;
+
+  // Aplicar traducción a elementos con data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const esOriginal = el.dataset.i18n;
+    el.textContent = t(esOriginal);
+  });
+
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const esOriginal = el.dataset.i18nPlaceholder;
+    el.placeholder = t(esOriginal);
+  });
+
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const esOriginal = el.dataset.i18nTitle;
+    el.title = t(esOriginal);
+  });
+
+  // Actualizar botón de traducción
+  const btnTranslate = document.getElementById('btn-translate');
+  if (btnTranslate) {
+    btnTranslate.textContent = idioma === 'en' ? '🌐 Español' : '🌐 English';
+  }
+
+  // Re-renderizar contenido dinámico
+  renderizarFormulario();
+  actualizarTabla();
+  actualizarModo();
+}
+
+function toggleIdioma() {
+  const nuevoIdioma = estado.idioma === 'en' ? 'es' : 'en';
+  aplicarIdioma(nuevoIdioma);
 }
 
 // ── Inicialización ─────────────────────────────────────────────
@@ -655,6 +726,7 @@ document.addEventListener('DOMContentLoaded', () => {
   inicializarVoz();
   seleccionarPatologia('pene');
   actualizarModo();
+  aplicarIdioma(estado.idioma);
 
   document.getElementById('btn-guardar').addEventListener('click', agregarRegistro);
   document.getElementById('btn-limpiar').addEventListener('click', limpiarFormulario);
@@ -662,14 +734,15 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('extract-btn').addEventListener('click', extraerCampos);
 
   document.getElementById('btn-export-excel').addEventListener('click', () => exportarExcel(estado.registros));
-  document.getElementById('btn-export-csv').addEventListener('click', () => exportarCSV(estado.registros));
   document.getElementById('btn-subir-drive').addEventListener('click', subirAlDrive);
   document.getElementById('btn-cargar-drive').addEventListener('click', cargarDesdeDrive);
   document.getElementById('btn-configuracion').addEventListener('click', abrirConfiguracion);
   document.getElementById('btn-modal-close').addEventListener('click', cerrarConfiguracion);
   document.getElementById('btn-modal-guardar').addEventListener('click', guardarConfiguracion);
+  document.getElementById('btn-translate').addEventListener('click', toggleIdioma);
 
   document.getElementById('modal-config').addEventListener('click', (e) => {
     if (e.target === document.getElementById('modal-config')) cerrarConfiguracion();
   });
 });
+

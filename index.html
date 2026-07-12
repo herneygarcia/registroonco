@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,245 +9,249 @@
   <!-- SheetJS para exportación Excel -->
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 </head>
+
 <body>
 
-<!-- ── Header ──────────────────────────────────────────────── -->
-<header>
-  <div class="header-badge">
-    <img src="logo.png" alt="Herney Andrés García Perdomo" class="header-logo">
-  </div>
-  <h1>🔬 RegistroOnco <span>| Urología Oncológica</span></h1>
-  <div class="header-right">
-    <span id="mode-badge" class="mode-badge manual">✋ Modo manual</span>
-    <button class="btn btn-outline" id="btn-configuracion" style="color:#fff;border-color:rgba(255,255,255,0.3)">
-      ⚙️ Configuración
-    </button>
-  </div>
-</header>
+  <!-- ── Header ──────────────────────────────────────────────── -->
+  <header>
+    <div class="header-badge">
+      <img src="logo.png" alt="Herney Andrés García Perdomo" class="header-logo">
+    </div>
+    <h1>🔬 RegistroOnco <span data-i18n="Urología Oncológica">| Genitourinary Oncology</span></h1>
+    <div class="header-right">
+      <span id="mode-badge" class="mode-badge manual" data-i18n="✋ Modo manual">✋ Manual Mode</span>
+      <button class="btn btn-outline" id="btn-configuracion" style="color:#fff;border-color:rgba(255,255,255,0.3)" data-i18n="Configuración">
+        ⚙️ Settings
+      </button>
+      <button class="btn btn-outline" id="btn-translate" style="color:#fff;border-color:rgba(255,255,255,0.3)">
+        🌐 Español
+      </button>
+    </div>
+  </header>
 
-<!-- ── Layout ──────────────────────────────────────────────── -->
-<div class="layout">
+  <!-- ── Layout ──────────────────────────────────────────────── -->
+  <div class="layout">
 
-  <!-- ── Sidebar: selector de patología ── -->
-  <aside class="sidebar">
-    <h2>Patologías</h2>
+    <!-- ── Sidebar: selector de patología ── -->
+    <aside class="sidebar">
+      <h2 data-i18n="Patologías">Pathologies</h2>
 
-    <button class="tumor-btn active" data-id="pene" onclick="seleccionarPatologia('pene')">
-      <span class="tumor-dot" style="background:#c0392b"></span> Cáncer de Pene
-    </button>
-    <button class="tumor-btn" data-id="prostata" onclick="seleccionarPatologia('prostata')">
-      <span class="tumor-dot" style="background:#2980b9"></span> Cáncer de Próstata
-    </button>
-    <button class="tumor-btn" data-id="vejiga" onclick="seleccionarPatologia('vejiga')">
-      <span class="tumor-dot" style="background:#8e44ad"></span> Cáncer de Vejiga
-    </button>
-    <button class="tumor-btn" data-id="rinon" onclick="seleccionarPatologia('rinon')">
-      <span class="tumor-dot" style="background:#27ae60"></span> Cáncer de Riñón
-    </button>
-    <button class="tumor-btn" data-id="testiculo" onclick="seleccionarPatologia('testiculo')">
-      <span class="tumor-dot" style="background:#d35400"></span> Cáncer de Testículo
-    </button>
-    <button class="tumor-btn" data-id="ureter" onclick="seleccionarPatologia('ureter')">
-      <span class="tumor-dot" style="background:#16a085"></span> Urotelial Alto
-    </button>
-    <button class="tumor-btn" data-id="adrenal" onclick="seleccionarPatologia('adrenal')">
-      <span class="tumor-dot" style="background:#6c3483"></span> Cáncer Adrenal
-    </button>
-    <button class="tumor-btn" data-id="escroto" onclick="seleccionarPatologia('escroto')">
-      <span class="tumor-dot" style="background:#784212"></span> Cáncer de Escroto
-    </button>
-    <button class="tumor-btn" data-id="uretra" onclick="seleccionarPatologia('uretra')">
-      <span class="tumor-dot" style="background:#1a5276"></span> Cáncer de Uretra
-    </button>
+      <button class="tumor-btn active" data-id="pene" onclick="seleccionarPatologia('pene')" data-i18n="Cáncer de Pene">
+        <span class="tumor-dot" style="background:#c0392b"></span> Penile Cancer
+      </button>
+      <button class="tumor-btn" data-id="prostata" onclick="seleccionarPatologia('prostata')" data-i18n="Cáncer de Próstata">
+        <span class="tumor-dot" style="background:#2980b9"></span> Prostate Cancer
+      </button>
+      <button class="tumor-btn" data-id="vejiga" onclick="seleccionarPatologia('vejiga')" data-i18n="Cáncer de Vejiga">
+        <span class="tumor-dot" style="background:#8e44ad"></span> Bladder Cancer
+      </button>
+      <button class="tumor-btn" data-id="rinon" onclick="seleccionarPatologia('rinon')" data-i18n="Cáncer de Riñón">
+        <span class="tumor-dot" style="background:#27ae60"></span> Renal Cell Carcinoma
+      </button>
+      <button class="tumor-btn" data-id="testiculo" onclick="seleccionarPatologia('testiculo')" data-i18n="Cáncer de Testículo">
+        <span class="tumor-dot" style="background:#d35400"></span> Testicular Cancer
+      </button>
+      <button class="tumor-btn" data-id="ureter" onclick="seleccionarPatologia('ureter')" data-i18n="Urotelial Alto">
+        <span class="tumor-dot" style="background:#16a085"></span> Upper Urothelial
+      </button>
+      <button class="tumor-btn" data-id="adrenal" onclick="seleccionarPatologia('adrenal')" data-i18n="Cáncer Adrenal">
+        <span class="tumor-dot" style="background:#6c3483"></span> Adrenal Cancer
+      </button>
+      <button class="tumor-btn" data-id="escroto" onclick="seleccionarPatologia('escroto')" data-i18n="Cáncer de Escroto">
+        <span class="tumor-dot" style="background:#784212"></span> Scrotal Cancer
+      </button>
+      <button class="tumor-btn" data-id="uretra" onclick="seleccionarPatologia('uretra')" data-i18n="Cáncer de Uretra">
+        <span class="tumor-dot" style="background:#1a5276"></span> Urethral Cancer
+      </button>
 
-    <div class="sidebar-divider"></div>
+      <div class="sidebar-divider"></div>
 
-    <button class="btn btn-success" id="btn-export-excel" style="width:100%">
-      📊 Exportar Excel
-    </button>
-    <button class="btn btn-outline btn-sm" id="btn-export-csv" style="width:100%;margin-top:6px">
-      📄 Exportar CSV
-    </button>
-    <button class="btn btn-outline btn-sm" id="btn-subir-drive" style="width:100%;margin-top:6px">
-      ☁️ Subir a Drive
-    </button>
-    <button class="btn btn-outline btn-sm" id="btn-cargar-drive" style="width:100%;margin-top:6px">
-      📥 Cargar desde Drive
-    </button>
-  </aside>
+      <button class="btn btn-success" id="btn-export-excel" style="width:100%" data-i18n="📊 Exportar Excel">
+        📊 Export Excel
+      </button>
+      <button class="btn btn-outline btn-sm" id="btn-subir-drive" style="width:100%;margin-top:6px" data-i18n="☁️ Subir a Drive">
+        ☁️ Upload to Drive
+      </button>
+      <button class="btn btn-outline btn-sm" id="btn-cargar-drive" style="width:100%;margin-top:6px" data-i18n="📥 Cargar desde Drive">
+        📥 Load from Drive
+      </button>
+    </aside>
 
-  <!-- ── Contenido principal ── -->
-  <main class="main">
+    <!-- ── Contenido principal ── -->
+    <main class="main">
 
-    <!-- Sección: Dictado por voz -->
-    <div class="card">
-      <div class="card-header">
-        <h3>🎙 Dictado por voz</h3>
-        <small style="color:var(--text-muted)">Hable libremente — la IA extrae los campos automáticamente</small>
+      <!-- Sección: Dictado por voz -->
+      <div class="card">
+        <div class="card-header">
+          <h3 data-i18n="Dictado por voz">🎙 Voice Dictation</h3>
+          <small style="color:var(--text-muted)" data-i18n="Hable libremente — la IA extrae los campos automáticamente">Speak freely — AI extracts fields automatically</small>
+        </div>
+        <div class="card-body">
+          <div class="voice-section">
+            <div class="voice-row">
+              <div class="mic-column">
+                <button class="mic-btn" id="mic-btn" data-i18n-title="Presione para iniciar/detener grabación" title="Press to start/stop recording">
+                  🎙
+                </button>
+                <p class="mic-label" id="mic-label" data-i18n="Presione el micrófono y dicte la información del paciente.">Press the microphone and dictate patient information.</p>
+              </div>
+              <div class="transcript-box" id="transcripcion">
+                <!-- texto transcrito aparece aquí -->
+              </div>
+            </div>
+
+            <button class="btn btn-primary extract-btn" id="extract-btn" data-i18n="✨ Extraer campos con IA">
+              ✨ Extract with AI
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="card-body">
-        <div class="voice-section">
-          <button class="mic-btn" id="mic-btn" title="Presione para iniciar/detener grabación">
-            🎙
-          </button>
-          <p class="mic-label" id="mic-label">Presione el micrófono y dicte la información del paciente.</p>
 
-          <div class="transcript-box" id="transcripcion" style="width:100%">
-            <!-- texto transcrito aparece aquí -->
+      <!-- Sección: Formulario de registro -->
+      <div class="card">
+        <div class="card-header">
+          <h3 id="form-title" style="padding-left:10px;border-left:4px solid var(--primary)" data-i18n="Nuevo registro">
+            New Record
+          </h3>
+          <small style="color:var(--text-muted)" data-i18n="Complete o corrija los campos antes de guardar">Fill or correct fields before saving</small>
+        </div>
+        <div class="card-body">
+          <div class="form-grid" id="form-fields">
+            <!-- campos generados dinámicamente por app.js -->
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-outline" id="btn-limpiar" data-i18n="🗑 Limpiar">🗑 Clear</button>
+            <button class="btn btn-success" id="btn-guardar" data-i18n="💾 Guardar registro">💾 Save Record</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección: Tabla de registros -->
+      <div class="card">
+        <div class="card-header records-header">
+          <h3 data-i18n="Registros guardados">📋 Saved Records</h3>
+          <span class="records-count" id="registros-count" data-i18n="0 registro(s)">0 record(s)</span>
+        </div>
+        <div class="card-body" style="padding:0">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="Historia">Chart ID</th>
+                  <th data-i18n="Paciente">Patient</th>
+                  <th data-i18n="Edad">Age</th>
+                  <th data-i18n="Fecha Dx">Diagnosis Date</th>
+                  <th data-i18n="TNM">TNM</th>
+                  <th data-i18n="Procedimiento">Procedure</th>
+                  <th data-i18n="Estado">Status</th>
+                  <th data-i18n="Acciones">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-body">
+                <tr>
+                  <td colspan="8" class="table-empty" data-i18n="No hay registros para esta patología todavía.">No records for this pathology yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ── Modal: Configuración ────────────────────────────────── -->
+  <div class="modal-overlay" id="modal-config" style="display:none">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 data-i18n="Configuración">⚙️ Settings</h3>
+        <button class="modal-close" id="btn-modal-close">×</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex;flex-direction:column;gap:16px">
+
+          <!-- Selector de proveedor -->
+          <div>
+            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px" data-i18n="Proveedor de IA">
+              🤖 AI Provider
+            </label>
+            <select id="modal-proveedor" onchange="actualizarAyudaProveedor()"
+              style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px">
+              <option value="groq" data-i18n="Groq (LLaMA 3.3) — Gratuito ✅">Groq (LLaMA 3.3) — Free ✅</option>
+              <option value="gemini" data-i18n="Google Gemini — Gratuito ✅">Google Gemini — Free ✅</option>
+              <option value="claude" data-i18n="Anthropic Claude — De pago 💳">Anthropic Claude — Paid 💳</option>
+            </select>
           </div>
 
-          <button class="btn btn-primary extract-btn" id="extract-btn">
-            ✨ Extraer campos con IA
-          </button>
-        </div>
-      </div>
-    </div>
+          <!-- URL Google Drive Script -->
+          <div>
+            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px" data-i18n="URL Google Drive Script">
+              ☁️ Google Drive Script URL
+            </label>
+            <input type="text" id="modal-drive-url" placeholder="https://script.google.com/macros/s/..."
+              style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:monospace">
+            <p style="font-size:11px;color:var(--text-muted);margin-top:6px;line-height:1.6" data-i18n="Opcional. Obtenga la URL en script.google.com al desplegar el script como Web App.">
+              Optional. Get the URL from script.google.com when deploying the script as Web App.
+            </p>
+          </div>
 
-    <!-- Sección: Formulario de registro -->
-    <div class="card">
-      <div class="card-header">
-        <h3 id="form-title" style="padding-left:10px;border-left:4px solid var(--primary)">
-          Nuevo registro
-        </h3>
-        <small style="color:var(--text-muted)">Complete o corrija los campos antes de guardar</small>
-      </div>
-      <div class="card-body">
-        <div class="form-grid" id="form-fields">
-          <!-- campos generados dinámicamente por app.js -->
-        </div>
-        <div class="form-actions">
-          <button class="btn btn-outline" id="btn-limpiar">🗑 Limpiar</button>
-          <button class="btn btn-success" id="btn-guardar">💾 Guardar registro</button>
-        </div>
-      </div>
-    </div>
+          <!-- Campo API Key -->
+          <div>
+            <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px" data-i18n="API Key">
+              🔑 API Key
+            </label>
+            <input type="password" id="modal-api-key" placeholder="AIzaSy..."
+              style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:monospace">
+            <p id="ayuda-proveedor" style="font-size:11px;color:var(--text-muted);margin-top:6px;line-height:1.6">
+              ✅ <strong>Free.</strong> Get your key from <strong>console.groq.com</strong> → "API Keys" → "Create API Key". No credit card required. 14,400 requests/day.
+            </p>
+          </div>
 
-    <!-- Sección: Tabla de registros -->
-    <div class="card">
-      <div class="card-header records-header">
-        <h3>📋 Registros guardados</h3>
-        <span class="records-count" id="registros-count">0 registro(s)</span>
-      </div>
-      <div class="card-body" style="padding:0">
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>Historia</th>
-                <th>Paciente</th>
-                <th>Edad</th>
-                <th>Fecha Dx</th>
-                <th>TNM</th>
-                <th>Procedimiento</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="tabla-body">
-              <tr>
-                <td colspan="8" class="table-empty">No hay registros para esta patología todavía.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+          <div style="background:var(--bg);border-radius:8px;padding:14px;border:1px solid var(--border)">
+            <p style="font-size:12px;font-weight:600;margin-bottom:6px" data-i18n="Modos de funcionamiento">ℹ️ Operating Modes</p>
+            <p style="font-size:12px;color:var(--text-muted);line-height:1.7">
+              <strong>🤖 Groq (compartida):</strong> Default — AI extracts fields automatically using a shared server key (no personal key needed).<br>
+              <strong>🆓 Gemini / 🤖 Claude:</strong> Optional — bring your own API key for direct provider access.<br>
+              <strong>✋ Manual Mode:</strong> Voice transcribes only — you fill fields manually.
+            </p>
+          </div>
 
-  </main>
-</div>
+          <div style="background:#fff8e1;border-radius:8px;padding:14px;border:1px solid #ffe082">
+            <p style="font-size:12px;font-weight:600;margin-bottom:4px" data-i18n="Privacidad">🔒 Privacy</p>
+            <p style="font-size:12px;color:#6d4c00;line-height:1.6" data-i18n="La API key se guarda solo en este navegador. Los registros se guardan localmente. Solo el dictado de voz se envía al proveedor de IA seleccionado.">
+              API key is stored only in this browser. Records are saved locally. Only voice dictation is sent to the selected AI provider.
+            </p>
+          </div>
 
-<!-- ── Modal: Configuración ────────────────────────────────── -->
-<div class="modal-overlay" id="modal-config" style="display:none">
-  <div class="modal">
-    <div class="modal-header">
-      <h3>⚙️ Configuración</h3>
-      <button class="modal-close" id="btn-modal-close">×</button>
-    </div>
-    <div class="modal-body">
-      <div style="display:flex;flex-direction:column;gap:16px">
-
-        <!-- Selector de proveedor -->
-        <div>
-          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px">
-            🤖 Proveedor de IA
-          </label>
-          <select id="modal-proveedor" onchange="actualizarAyudaProveedor()"
-            style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px">
-            <option value="groq">Groq (LLaMA 3.3) — Gratuito ✅</option>
-            <option value="gemini">Google Gemini — Gratuito ✅</option>
-            <option value="claude">Anthropic Claude — De pago 💳</option>
-          </select>
-        </div>
-
-        <!-- URL Google Drive Script -->
-        <div>
-          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px">
-            ☁️ URL Google Drive Script
-          </label>
-          <input type="text" id="modal-drive-url"
-            placeholder="https://script.google.com/macros/s/..."
-            style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:monospace">
-          <p style="font-size:11px;color:var(--text-muted);margin-top:6px;line-height:1.6">
-            Opcional. Obtenga la URL en <strong>script.google.com</strong> al desplegar el script como Web App.
-          </p>
-        </div>
-
-        <!-- Campo API Key -->
-        <div>
-          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px">
-            🔑 API Key
-          </label>
-          <input type="password" id="modal-api-key"
-            placeholder="AIzaSy..."
-            style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:monospace">
-          <p id="ayuda-proveedor" style="font-size:11px;color:var(--text-muted);margin-top:6px;line-height:1.6">
-            ✅ <strong>Gratuito.</strong> Obtenga su key en <strong>console.groq.com</strong> → "API Keys" → "Create API Key". No requiere tarjeta. 14.400 solicitudes/día.
-          </p>
-        </div>
-
-        <div style="background:var(--bg);border-radius:8px;padding:14px;border:1px solid var(--border)">
-          <p style="font-size:12px;font-weight:600;margin-bottom:6px">ℹ️ Modos de funcionamiento</p>
-          <p style="font-size:12px;color:var(--text-muted);line-height:1.7">
-            <strong>🆓 Gemini / 🤖 Claude:</strong> Habla libremente → la IA extrae y llena los campos automáticamente.<br>
-            <strong>✋ Modo manual:</strong> Sin API key — la voz transcribe y usted llena los campos a mano.
-          </p>
-        </div>
-
-        <div style="background:#fff8e1;border-radius:8px;padding:14px;border:1px solid #ffe082">
-          <p style="font-size:12px;font-weight:600;margin-bottom:4px">🔒 Privacidad</p>
-          <p style="font-size:12px;color:#6d4c00;line-height:1.6">
-            La API key se guarda solo en este navegador. Los registros se guardan localmente. Solo el dictado de voz se envía al proveedor de IA seleccionado.
-          </p>
-        </div>
-
-        <div style="display:flex;justify-content:flex-end;gap:10px">
-          <button class="btn btn-outline" onclick="cerrarConfiguracion()">Cancelar</button>
-          <button class="btn btn-primary" id="btn-modal-guardar">Guardar</button>
+          <div style="display:flex;justify-content:flex-end;gap:10px">
+            <button class="btn btn-outline" onclick="cerrarConfiguracion()" data-i18n="Cancelar">Cancel</button>
+            <button class="btn btn-primary" id="btn-modal-guardar" data-i18n="Guardar">Save</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- ── Toast container ─────────────────────────────────────── -->
-<div id="toast-container"></div>
+  <!-- ── Toast container ─────────────────────────────────────── -->
+  <div id="toast-container"></div>
 
-<!-- ── Footer ────────────────────────────────────────────────── -->
-<footer>
-  <div class="footer-badge">
-    <img src="logo.png" alt="Herney Andrés García Perdomo" class="footer-logo">
+  <!-- ── Footer ────────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-badge">
+      <img src="logo.png" alt="Herney Andrés García Perdomo" class="footer-logo">
+    </div>
     <div class="footer-text">
-      <p class="footer-name">HERNEY ANDRÉS<br>GARCÍA PERDOMO</p>
-      <p class="footer-credentials">MD MSc EdD PhD FACS</p>
-      <p class="footer-specialty">Urología oncológica - Epidemiología clínica</p>
+      <p class="footer-name">Herney Andres Garcia Perdomo MD MSc EdD PhD FACS</p>
+      <p class="footer-specialty" data-i18n="Urología oncológica - Epidemiología clínica">Genitourinary Oncology - Clinical Epidemiology</p>
     </div>
-  </div>
-</footer>
+  </footer>
 
-<!-- ── Scripts ─────────────────────────────────────────────── -->
-<script src="templates.js"></script>
-<script src="export.js"></script>
-<script src="app.js"></script>
+  <!-- ── Scripts ─────────────────────────────────────────────── -->
+  <script src="templates.js"></script>
+  <script src="translations.js"></script>
+  <script src="export.js"></script>
+  <script src="app.js"></script>
 
 </body>
+
 </html>
