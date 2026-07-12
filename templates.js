@@ -19,7 +19,7 @@ const PLANTILLAS = {
     color: '#c0392b',
     campos: [
       ...CAMPOS_COMUNES,
-      { id: 'cie10', label: 'Código CIE-10', tipo: 'select', opciones: ['C60.0', 'C60.1', 'C60.2', 'C60.8', 'C60.9'] },
+      { id: 'cie10', label: 'Código CIE-10', tipo: 'select', opciones: ['C60.0', 'C60.1', 'C60.2', 'C60.8', 'C60.9'], default: 'C60.2' },
       { id: 'fecha_diagnostico', label: 'Fecha diagnóstico', tipo: 'date' },
       { id: 'histologia', label: 'Histología', tipo: 'select', opciones: ['Carcinoma escamocelular', 'Verrucoso', 'Basaloide', 'Sarcomatoide', 'Otro'] },
       { id: 'grado', label: 'Grado diferenciación', tipo: 'select', opciones: ['G1 bien diferenciado', 'G2 moderado', 'G3 pobremente diferenciado'] },
@@ -71,7 +71,7 @@ const PLANTILLAS = {
     color: '#8e44ad',
     campos: [
       ...CAMPOS_COMUNES,
-      { id: 'cie10', label: 'Código CIE-10', tipo: 'select', opciones: ['C67.0','C67.1','C67.2','C67.3','C67.4','C67.5','C67.6','C67.7','C67.8','C67.9'] },
+      { id: 'cie10', label: 'Código CIE-10', tipo: 'select', opciones: ['C67.0','C67.1','C67.2','C67.3','C67.4','C67.5','C67.6','C67.7','C67.8','C67.9'], default: 'C67.9' },
       { id: 'fecha_diagnostico', label: 'Fecha diagnóstico', tipo: 'date' },
       { id: 'histologia', label: 'Histología', tipo: 'select', opciones: ['Carcinoma urotelial', 'Carcinoma escamocelular', 'Adenocarcinoma', 'Carcinoma de células pequeñas', 'Otro'] },
       { id: 'grado_who', label: 'Grado WHO 2004', tipo: 'select', opciones: ['Bajo grado', 'Alto grado'] },
@@ -180,7 +180,7 @@ const PLANTILLAS = {
     color: '#6c3483',
     campos: [
       ...CAMPOS_COMUNES,
-      { id: 'cie10', label: 'Código CIE-10', tipo: 'select', opciones: ['C74.0 — Corteza suprarrenal', 'C74.1 — Médula suprarrenal', 'C74.9 — NE'], default: 'C74.0 — Corteza suprarrenal' },
+      { id: 'cie10', label: 'Código CIE-10', tipo: 'select', opciones: ['C74.0 — Corteza suprarrenal', 'C74.1 — Médula suprarrenal', 'C74.9 — NE'], default: 'C74.9 — NE' },
       { id: 'lateralidad', label: 'Lateralidad', tipo: 'select', opciones: ['Derecho', 'Izquierdo', 'Bilateral'] },
       { id: 'tamano', label: 'Tamaño tumor (cm)', tipo: 'number' },
       { id: 'fecha_diagnostico', label: 'Fecha diagnóstico', tipo: 'date' },
