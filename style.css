@@ -59,6 +59,11 @@ header h1 span {
   gap: 12px;
 }
 
+.header-right .btn-outline:hover,
+.header-right .btn-outline:active {
+  background: transparent;
+}
+
 .header-badge {
   background: #fff;
   border-radius: 8px;
@@ -677,5 +682,10 @@ tbody td {
     display: inline;
     font-size: 10px;
     margin-left: 2px;
+  }
+
+  #btn-translate {
+    flex: 0 0 auto;
+    padding: 5px 6px;
   }
 }
