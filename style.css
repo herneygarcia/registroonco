@@ -613,43 +613,48 @@ tbody td {
 
   header {
     flex-wrap: wrap;
+    justify-content: flex-start;
     height: auto;
-    padding: 12px 16px;
+    padding: 10px 12px;
     gap: 8px;
+    align-content: flex-start;
   }
 
   header h1 {
-    font-size: 16px;
+    font-size: 15px;
     flex: 1;
     min-width: 0;
+    margin-left: 4px;
   }
 
   header h1 span { display: none; }
 
   .header-badge {
     margin-right: 0;
-    padding: 3px 6px;
+    padding: 2px 4px;
+    flex-shrink: 0;
   }
 
   .header-logo {
-    height: 28px;
+    height: 24px;
   }
 
   .header-right {
     width: 100%;
-    gap: 8px;
+    gap: 6px;
+    display: flex;
   }
 
   .header-right button, .header-right span {
-    font-size: 12px;
-    padding: 8px 10px;
+    font-size: 11px;
+    padding: 6px 8px;
     flex: 1;
-    min-width: 0;
   }
 
   .mode-badge {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 11px;
   }
 }
