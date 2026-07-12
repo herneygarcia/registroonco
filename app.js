@@ -39,8 +39,8 @@ function guardarProveedor(p) {
   localStorage.setItem('registroOnco_proveedor', p);
 }
 
-const DRIVE_URL_ACTUAL = 'https://script.google.com/macros/s/AKfycbzNqCH_xY2eYUUIJP3blp5GfxsDfuCElhnI2bShc_XbUm57O6rofPBWVsIx4o_SguzMhg/exec';
-const DRIVE_URL_ANTIGUA = 'https://script.google.com/macros/s/AKfycbxVpObqz1WJiHA8vKFTr51HWmqHte0pQrb9ZFmYiHTvGy8UqYP6Aik8uphMVM-mtXdeRw/exec';
+const DRIVE_URL_ACTUAL = 'https://script.google.com/macros/s/AKfycbzpUWowlbFeVi8VEZHj0_70l1vlQiPyIJRt6tG2uLq2nreREeqU4HFPIw9TrzmeS2SY/exec';
+const DRIVE_URL_ANTIGUA = 'https://script.google.com/macros/s/AKfycbzNqCH_xY2eYUUIJP3blp5GfxsDfuCElhnI2bShc_XbUm57O6rofPBWVsIx4o_SguzMhg/exec';
 
 function obtenerDriveUrl() {
   const guardada = localStorage.getItem('registroOnco_driveurl');
