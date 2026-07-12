@@ -52,8 +52,8 @@ function exportarExcel(registros) {
   });
 
   // Hoja resumen con todos los registros (campos básicos)
-  const camposResumen = ['_patologiaNombre', 'nombre', 'historia_clinica', 'edad', 'fecha_diagnostico', 'estadio', 'tnm_t', 'tnm_n', 'tnm_m', 'procedimiento', 'estado_actual', 'proximo_seguimiento'];
-  const encResumen = ['Patología', 'Nombre', 'Historia clínica', 'Edad', 'Fecha dx', 'Estadio', 'T', 'N', 'M', 'Procedimiento', 'Estado actual', 'Próximo control'];
+  const camposResumen = ['_patologiaNombre', 'nombre', 'historia_clinica', 'edad', 'fecha_diagnostico', 'tnm_t', 'tnm_n', 'tnm_m', 'procedimiento', 'estado_actual', 'proximo_seguimiento'];
+  const encResumen = ['Patología', 'Nombre', 'Historia clínica', 'Edad', 'Fecha dx', 'T', 'N', 'M', 'Procedimiento', 'Estado actual', 'Próximo control'];
   const filasResumen = registros.map(r => camposResumen.map(c => r[c] ?? ''));
   const wsResumen = XLSX.utils.aoa_to_sheet([encResumen, ...filasResumen]);
   wsResumen['!cols'] = encResumen.map(h => ({ wch: Math.max(h.length + 2, 15) }));
